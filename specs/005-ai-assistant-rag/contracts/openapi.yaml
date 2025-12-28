@@ -1,0 +1,523 @@
+openapi: 3.1.0
+info:
+  title: AI Assistant RAG API
+  description: Backend API for the Physical AI & Robotics book AI Assistant
+  version: 1.0.0
+  contact:
+    name: AI Book Support
+    url: https://github.com/your-org/ai-book
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://your-backend.renderapp.com
+    description: Production server
+
+tags:
+  - name: Chat
+    description: AI chat and question answering endpoints
+  - name: Conversations
+    description: Conversation history management
+  - name: Indexing
+    description: Content indexing and search endpoints
+  - name: Health
+    description: System health and status
+
+paths:
+  /api/v1/chat:
+    post:
+      tags:
+        - Chat
+      summary: Send a question and get AI response
+      description: |
+        Sends a user question to the RAG system and returns an AI-generated
+        response with citations from the book content.
+      operationId: sendChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+            example:
+              query: "What is a digital twin?"
+              selected_text: null
+              conversation_id: null
+              context_chapter: "/docs/digital-twin"
+      responses:
+        '200':
+          description: Successful response with AI answer and citations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /api/v1/chat/{conversation_id}:
+    get:
+      tags:
+        - Conversations
+      summary: Get conversation details
+      description: Retrieves metadata for a specific conversation.
+      operationId: getConversation
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Conversation details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v1/chat/{conversation_id}/messages:
+    get:
+      tags:
+        - Conversations
+      summary: Get conversation messages
+      description: Retrieves all messages in a conversation, including AI responses with citations.
+      operationId: getConversationMessages
+      parameters:
+        - name: conversation_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /api/v1/index:
+    post:
+      tags:
+        - Indexing
+      summary: Trigger content re-indexing
+      description: |
+        Triggers a re-indexing of the book content. This is an admin-only
+        endpoint that should be protected in production.
+      operationId: reindexContent
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReindexRequest'
+            example:
+              force: false
+      responses:
+        '202':
+          description: Indexing started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    get:
+      tags:
+        - Indexing
+      summary: Get indexing status
+      description: Returns the current status of the content index.
+      operationId: getIndexStatus
+      responses:
+        '200':
+          description: Current indexing status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexStatus'
+
+  /api/v1/search:
+    get:
+      tags:
+        - Indexing
+      summary: Search book content
+      description: Performs a semantic search across indexed book content.
+      operationId: searchContent
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 500
+          description: Search query
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+            maximum: 20
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+
+  /api/v1/health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns the health status of the API and its dependencies.
+      operationId: healthCheck
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: System is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 2000
+          description: The user's question
+          example: "What is a digital twin?"
+        selected_text:
+          type: string
+          nullable: true
+          maxLength: 1000
+          description: Optional selected text for context
+          example: null
+        conversation_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Optional existing conversation ID for continuity
+          example: null
+        context_chapter:
+          type: string
+          nullable: true
+          description: Optional chapter URL path to narrow context
+          example: "/docs/digital-twin"
+
+    ChatResponse:
+      type: object
+      required:
+        - response
+        - citations
+        - conversation_id
+      properties:
+        response:
+          type: string
+          description: AI-generated answer
+          example: "A digital twin is a virtual representation of a physical object or system..."
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          description: Source citations from book content
+        conversation_id:
+          type: string
+          format: uuid
+          description: Conversation ID for follow-up messages
+          example: "550e8400-e29b-41d4-a716-446655440000"
+
+    Citation:
+      type: object
+      required:
+        - chunk_id
+        - chapter_path
+        - title
+        - relevance_score
+      properties:
+        chunk_id:
+          type: string
+          description: Unique identifier for the source chunk
+          example: "abc123-def456"
+        chapter_path:
+          type: string
+          description: URL path to the source chapter
+          example: "/docs/physical-ai-robotics-course"
+        title:
+          type: string
+          description: Title of the source chapter/section
+          example: "Module 2: Digital Twin (Gazebo & Unity)"
+        relevance_score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Relevance score of this citation to the query
+          example: 0.92
+        excerpt:
+          type: string
+          nullable: true
+          description: Optional excerpt from the source
+          example: "A digital twin is a virtual representation..."
+
+    ConversationResponse:
+      type: object
+      required:
+        - id
+        - created_at
+        - updated_at
+        - title
+        - message_count
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:00:00Z"
+        updated_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:30:00Z"
+        title:
+          type: string
+          description: Generated title from first user query
+          example: "Questions about digital twins"
+        message_count:
+          type: integer
+          example: 5
+
+    MessageResponse:
+      type: object
+      required:
+        - id
+        - role
+        - content
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "msg_123"
+        role:
+          type: string
+          enum:
+            - user
+            - assistant
+          example: "assistant"
+        content:
+          type: string
+          example: "A digital twin is..."
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Citation'
+          default: []
+        created_at:
+          type: string
+          format: date-time
+          example: "2025-12-28T10:15:00Z"
+
+    IndexStatus:
+      type: object
+      required:
+        - status
+        - total_chunks
+        - indexed_chunks
+      properties:
+        status:
+          type: string
+          enum:
+            - idle
+            - indexing
+            - completed
+            - failed
+          example: "completed"
+        total_chunks:
+          type: integer
+          description: Total chunks to be indexed
+          example: 150
+        indexed_chunks:
+          type: integer
+          description: Number of chunks successfully indexed
+          example: 150
+        last_indexed_at:
+          type: string
+          format: date-time
+          nullable: true
+          example: "2025-12-28T09:00:00Z"
+        error:
+          type: string
+          nullable: true
+          example: null
+
+    ReindexRequest:
+      type: object
+      properties:
+        force:
+          type: boolean
+          default: false
+          description: If true, reindex even if content hasn't changed
+
+    SearchResult:
+      type: object
+      required:
+        - chunk_id
+        - chapter_path
+        - title
+        - score
+      properties:
+        chunk_id:
+          type: string
+          example: "abc123"
+        chapter_path:
+          type: string
+          example: "/docs/uv-package-manager"
+        title:
+          type: string
+          example: "Chapter 1: Getting Started with uv"
+        score:
+          type: number
+          example: 0.85
+        excerpt:
+          type: string
+          example: "uv is an extremely fast Python package installer..."
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - version
+        - services
+      properties:
+        status:
+          type: string
+          enum:
+            - healthy
+            - degraded
+            - unhealthy
+          example: "healthy"
+        version:
+          type: string
+          example: "1.0.0"
+        services:
+          type: object
+          properties:
+            qdrant:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - healthy
+                    - unhealthy
+                  example: "healthy"
+                latency_ms:
+                  type: number
+                  example: 5
+            openai:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - healthy
+                    - unhealthy
+                  example: "healthy"
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid query format"
+              detail:
+                type: string
+                example: "Query must be between 1 and 2000 characters"
+
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Authentication required"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Conversation not found"
+
+    InternalError:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error"
+              request_id:
+                type: string
+                example: "req_abc123"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

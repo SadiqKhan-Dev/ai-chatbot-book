@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(sp.specify)",
+      "Bash(git fetch:*)",
+      "Bash(git checkout:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(npx docusaurus:*)",
+      "Bash(bash:*)",
+      "Skill(sp.plan)",
+      "Bash(powershell -ExecutionPolicy Bypass -File \".specify/scripts/powershell/setup-plan.ps1\" -Json)",
+      "Skill(sp.tasks)",
+      "Bash(powershell -ExecutionPolicy Bypass -File:*)",
+      "Skill(sp.implement)",
+      "Bash(ls -la \"E:\\\\VS-CODES\\\\Prompt-MCP\\\\sadiqkhan-eng\\\\specs\\\\005-ai-assistant-rag\\\\checklists\"\" 2>/dev/null || echo \"No checklists directory \")",
+      "Bash(ls:*)"
+    ]
+  }
+}

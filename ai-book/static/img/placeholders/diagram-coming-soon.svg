@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="300" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="var(--bg-secondary)" rx="12"/>
+  <rect x="2" y="2" width="796" height="296" fill="none" stroke="var(--border-light)" stroke-width="2" stroke-dasharray="8,8" rx="10"/>
+
+  <!-- Center icon -->
+  <g transform="translate(400, 120)" fill="var(--text-tertiary)">
+    <rect x="-40" y="-40" width="80" height="80" rx="16" fill="var(--bg-tertiary)"/>
+    <path d="M-16 -8 L-16 16 M0 -12 L0 16 M16 -8 L16 16" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Coming soon text -->
+  <text x="400" y="210" text-anchor="middle" font-family="var(--font-family-sans)" font-size="16" fill="var(--text-tertiary)" font-weight="500">
+    Diagram Coming Soon
+  </text>
+  <text x="400" y="235" text-anchor="middle" font-family="var(--font-family-sans)" font-size="13" fill="var(--text-tertiary)" opacity="0.7">
+    This section will include an illustrated diagram
+  </text>
+</svg>

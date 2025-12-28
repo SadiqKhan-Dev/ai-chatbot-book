@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Qdrant Vector Database (for local development)
+  qdrant:
+    image: qdrant/qdrant:v1.9.0
+    container_name: ai-book-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY:-}
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/dashboard"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis (optional - for session storage)
+  redis:
+    image: redis:7-alpine
+    container_name: ai-book-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-book-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - QDRANT_URL=http://qdrant:6333
+      - QDRANT_API_KEY=${QDRANT_API_KEY:-}
+      - SESSION_STORAGE=file
+      - DEBUG=true
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - sessions_data:/app/sessions
+
+volumes:
+  qdrant_data:
+  redis_data:
+  sessions_data:
+
+networks:
+  default:
+    name: ai-book-network

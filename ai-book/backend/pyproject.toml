@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ai-assistant-rag"
+version = "0.1.0"
+description = "RAG-powered AI Assistant for the Physical AI & Robotics book"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    # Web Framework
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+
+    # Configuration & Validation
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "python-dotenv>=1.0.0",
+
+    # RAG & Embeddings
+    "langchain>=0.2.0",
+    "langchain-core>=0.2.0",
+    "langchain-qdrant>=0.1.0",
+    "langchain-openai>=0.1.0",
+    "langchain-community>=0.2.0",
+
+    # OpenAI (for Agents SDK if needed)
+    "openai>=1.15.0",
+
+    # Alternative Embedding Providers
+    "cohere>=5.5.0",
+    "sentence-transformers>=3.0.0",
+    "torch>=2.1.0",
+
+    # Vector Database
+    "qdrant-client>=1.9.0",
+
+    # Utilities
+    "python-multipart>=0.0.6",
+    "httpx>=0.26.0",
+    "rich>=13.7.0",
+    "tiktoken>=0.6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.26.0",
+    "black>=23.0.0",
+    "ruff>=0.2.0",
+    "mypy>=1.8.0",
+]
+
+[project.scripts]
+ai-assistant = "src.cli.main:main"
+index-content = "src.cli.index_content:main"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true

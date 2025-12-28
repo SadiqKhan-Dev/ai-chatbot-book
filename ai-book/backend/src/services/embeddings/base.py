@@ -4,7 +4,7 @@ Defines the contract for all embedding providers.
 """
 
 from abc import ABC, abstractmethod
-from typing import list
+from typing import List
 
 from tqdm import tqdm
 
@@ -23,13 +23,13 @@ class BaseEmbeddingService(ABC):
         pass
 
     @abstractmethod
-    def embed(self, text: str) -> list[float]:
+    def embed(self, text: str) -> List[float]:
         """Generate embedding for a single text."""
         pass
 
     def embed_batch(
-        self, texts: list[str], show_progress: bool = True
-    ) -> list[list[float]]:
+        self, texts: List[str], show_progress: bool = True
+    ) -> List[List[float]]:
         """
         Generate embeddings for a batch of texts.
 
@@ -40,7 +40,7 @@ class BaseEmbeddingService(ABC):
         Returns:
             List of embedding vectors
         """
-        embeddings: list[list[float]] = []
+        embeddings: List[List[float]] = []
 
         iterator = tqdm(
             texts,
@@ -71,13 +71,13 @@ class BaseEmbeddingService(ABC):
                     raise e
 
     def batch_embed_with_retry(
-        self, texts: list[str], max_retries: int = 3
-    ) -> list[list[float]]:
+        self, texts: List[str], max_retries: int = 3
+    ) -> List[List[float]]:
         """Generate embeddings for batch with retry on failure."""
         import time
 
-        successful_embeddings: list[list[float]] = []
-        failed_indices: list[int] = []
+        successful_embeddings: List[List[float]] = []
+        failed_indices: List[int] = []
 
         for i, text in enumerate(texts):
             for attempt in range(max_retries):

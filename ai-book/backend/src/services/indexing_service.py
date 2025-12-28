@@ -94,7 +94,7 @@ class ContentIndexer:
 
                 # Generate embeddings
                 texts = [chunk.content for chunk in chunks]
-                embeddings = self.embedding_service.embed_documents(texts)
+                embeddings = self.embedding_service.embed_batch(texts)
 
                 # Create points for Qdrant
                 points = []
@@ -172,7 +172,7 @@ class ContentIndexer:
 
         # Generate embeddings
         texts = [chunk.content for chunk in chunks]
-        embeddings = self.embedding_service.embed_documents(texts)
+        embeddings = self.embedding_service.embed_batch(texts)
 
         # Create points
         points = []

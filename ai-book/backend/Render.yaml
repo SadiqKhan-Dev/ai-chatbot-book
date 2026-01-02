@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: ai-assistant-rag
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn src.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENAI_API_KEY
+        fromDatabase:
+          name: ai-assistant-db
+          property: openai_api_key
+      - key: QDRANT_URL
+        fromDatabase:
+          name: ai-assistant-db
+          property: qdrant_url
+      - key: QDRANT_API_KEY
+        fromDatabase:
+          name: ai-assistant-db
+          property: qdrant_api_key
+      - key: EMBEDDING_PROVIDER
+        value: openai
+      - key: PYTHONPATH
+        value: /app
+    healthCheckPath: /api/v1/health
+    disk:
+      name: conversations
+      mountPath: /app/conversations
+      sizeGB: 1
+
+databases:
+  - name: ai-assistant-db
+    databaseName: ai_assistant
+    user: ai_assistant

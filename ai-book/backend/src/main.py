@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api import chat_router, health_router, search_router, indexing_router
+from .api import chat_router, health_router, search_router, indexing_router, conversation_router
 from .core.config import get_settings
 
 # Configure logging
@@ -54,6 +54,7 @@ app.include_router(health_router.router)
 app.include_router(chat_router.router)
 app.include_router(search_router.router)
 app.include_router(indexing_router.router)
+app.include_router(conversation_router.router)
 
 
 @app.get("/")

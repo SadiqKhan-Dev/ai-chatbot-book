@@ -1,0 +1,40 @@
+# Fly.io Application Configuration
+# Deploy with: fly deploy
+
+app = "ai-assistant-rag"
+primary_region = "iad"
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[http_service.checks]]
+  interval = "10s"
+  timeout = "2s"
+  grace_period = "5s"
+  method = "GET"
+  path = "/api/v1/health"
+
+[vm]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+  cpus = 1
+  cpu_kind = "shared"
+
+[[mounts]]
+  source = "conversations_data"
+  destination = "/app/conversations"
+
+[[volumes]]
+  volume = "conversations_data"
+  size_gb = 1
+
+[env]
+  PYTHONPATH = "/app"
+  LOG_LEVEL = "INFO"

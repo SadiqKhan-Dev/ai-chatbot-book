@@ -22,19 +22,19 @@
 
 ### Tasks
 
-- [ ] T001 Create Python virtual environment and pyproject.toml in ai-book/backend/
-- [ ] T002 [P] Add FastAPI, uvicorn, pydantic, python-dotenv to dependencies
-- [ ] T003 [P] Add LangChain, langchain-qdrant, langchain-openai to dependencies
-- [ ] T004 [P] Add Cohere SDK and sentence-transformers (Hugging Face) to dependencies
-- [ ] T005 Create src/api/ directory structure with __init__.py files
-- [ ] T006 Create src/services/ directory structure with __init__.py files
-- [ ] T007 Create src/models/ directory structure with __init__.py files
-- [ ] T008 Create src/core/ directory structure with __init__.py files
-- [ ] T009 Create src/cli/ directory structure with __init__.py files
-- [ ] T010 Create tests/unit/ directory structure with __init__.py files
-- [ ] T011 Create tests/integration/ directory structure with __init__.py files
-- [ ] T012 Create .env.example with OPENAI_API_KEY, QDRANT_URL, QDRANT_API_KEY, COHERE_API_KEY placeholders
-- [ ] T013 Create docker-compose.yml for local Qdrant development
+- [X] T001 Create Python virtual environment and pyproject.toml in ai-book/backend/
+- [X] T002 [P] Add FastAPI, uvicorn, pydantic, python-dotenv to dependencies
+- [X] T003 [P] Add LangChain, langchain-qdrant, langchain-openai to dependencies
+- [X] T004 [P] Add Cohere SDK and sentence-transformers (Hugging Face) to dependencies
+- [X] T005 Create src/api/ directory structure with __init__.py files
+- [X] T006 Create src/services/ directory structure with __init__.py files
+- [X] T007 Create src/models/ directory structure with __init__.py files
+- [X] T008 Create src/core/ directory structure with __init__.py files
+- [X] T009 Create src/cli/ directory structure with __init__.py files
+- [X] T010 Create tests/unit/ directory structure with __init__.py files
+- [X] T011 Create tests/integration/ directory structure with __init__.py files
+- [X] T012 Create .env.example with OPENAI_API_KEY, QDRANT_URL, QDRANT_API_KEY, COHERE_API_KEY placeholders
+- [X] T013 Create docker-compose.yml for local Qdrant development
 
 ---
 
@@ -46,16 +46,16 @@
 
 ### Tasks
 
-- [ ] T020 Create src/core/config.py with Pydantic BaseSettings for environment loading
-- [ ] T021 Create src/core/__init__.py exporting config and initialize functions
-- [ ] T022 Create src/models/chat.py with ChatRequest, ChatResponse, Citation Pydantic models
-- [ ] T023 Create src/models/conversation.py with Conversation, Message Pydantic models
-- [ ] T024 Create src/models/indexing.py with IndexStatus, ReindexRequest, ChunkMetadata models
-- [ ] T025 Create src/models/__init__.py exporting all models
-- [ ] T026 Create src/services/qdrant_client.py with Qdrant connection and collection management
-- [ ] T027 Create src/services/embedding_service.py with OpenAIEmbeddingService class
-- [ ] T028 Create src/services/embedding_factory.py with EmbeddingFactory for multi-provider support
-- [ ] T029 Create src/services/__init__.py exporting all services
+- [X] T020 Create src/core/config.py with Pydantic BaseSettings for environment loading
+- [X] T021 Create src/core/__init__.py exporting config and initialize functions
+- [X] T022 Create src/models/chat.py with ChatRequest, ChatResponse, Citation Pydantic models
+- [X] T023 Create src/models/conversation.py with Conversation, Message Pydantic models
+- [X] T024 Create src/models/indexing.py with IndexStatus, ReindexRequest, ChunkMetadata models
+- [X] T025 Create src/models/__init__.py exporting all models
+- [X] T026 Create src/services/qdrant_client.py with Qdrant connection and collection management
+- [X] T027 Create src/services/embedding_service.py with OpenAIEmbeddingService class
+- [X] T028 Create src/services/embedding_factory.py with EmbeddingFactory for multi-provider support
+- [X] T029 Create src/services/__init__.py exporting all services
 
 ---
 
@@ -69,18 +69,18 @@
 
 ### Tasks
 
-- [ ] T040 Create src/services/chunking_service.py with MarkdownDocumentSplitter class
-- [ ] T041 [US1] Implement content chunking logic with 512-token chunks and 50-token overlap
-- [ ] T042 [US1] Create src/services/indexing_service.py with ContentIndexer class
-- [ ] T043 [US1] Implement index_content CLI command in src/cli/index_content.py
-- [ ] T044 [US1] Create src/services/retrieval_service.py with SemanticRetriever class
-- [ ] T045 [US1] Implement similarity search with relevance threshold (default 0.7)
-- [ ] T046 [US1] Create src/services/generation_service.py with ResponseGenerator class
-- [ ] T047 [US1] Implement RAG pipeline: retrieve passages → build context → generate response
-- [ ] T048 [US1] Create src/api/chat_router.py with POST /api/v1/chat endpoint
-- [ ] T049 [US1] Implement chat endpoint to accept query, run RAG pipeline, return response
-- [ ] T050 [US1] Create src/main.py with FastAPI app initialization and CORS configuration
-- [ ] T051 [US1] Add health endpoint GET /api/v1/health in src/api/health_router.py
+- [X] T040 Create src/services/chunking_service.py with MarkdownDocumentSplitter class
+- [X] T041 [US1] Implement content chunking logic with 512-token chunks and 50-token overlap
+- [X] T042 [US1] Create src/services/indexing_service.py with ContentIndexer class
+- [X] T043 [US1] Implement index_content CLI command in src/cli/index_content.py
+- [X] T044 [US1] Create src/services/retrieval_service.py with SemanticRetriever class
+- [X] T045 [US1] Implement similarity search with relevance threshold (default 0.7)
+- [X] T046 [US1] Create src/services/generation_service.py with ResponseGenerator class
+- [X] T047 [US1] Implement RAG pipeline: retrieve passages → build context → generate response
+- [X] T048 [US1] Create src/api/chat_router.py with POST /api/v1/chat endpoint
+- [X] T049 [US1] Implement chat endpoint to accept query, run RAG pipeline, return response
+- [X] T050 [US1] Create src/main.py with FastAPI app initialization and CORS configuration
+- [X] T051 [US1] Add health endpoint GET /api/v1/health in src/api/health_router.py
 
 ---
 
@@ -94,11 +94,11 @@
 
 ### Tasks
 
-- [ ] T060 [US2] Update Citation model in src/models/chat.py to include chapter_path and title
-- [ ] T061 [US2] Modify retrieval_service.py to return passages with full metadata
-- [ ] T062 [US2] Update generation_service.py to format citations in response with links
-- [ ] T063 [US2] Create src/api/search_router.py with GET /api/v1/search endpoint
-- [ ] T064 [US2] Implement semantic search returning results with excerpts
+- [X] T060 [US2] Update Citation model in src/models/chat.py to include chapter_path and title
+- [X] T061 [US2] Modify retrieval_service.py to return passages with full metadata
+- [X] T062 [US2] Update generation_service.py to format citations in response with links
+- [X] T063 [US2] Create src/api/search_router.py with GET /api/v1/search endpoint
+- [X] T064 [US2] Implement semantic search returning results with excerpts
 
 ---
 
@@ -112,11 +112,11 @@
 
 ### Tasks
 
-- [ ] T070 [US6] Create src/services/grounding_service.py with GroundingValidator class
-- [ ] T071 [US6] Implement out-of-scope detection with relevance threshold check
-- [ ] T072 [US6] Add fallback response template for unanswerable questions
-- [ ] T073 [US6] Implement suggestion system to recommend related topics
-- [ ] T074 [US6] Add confidence scoring to generation_service.py responses
+- [X] T070 [US6] Create src/services/grounding_service.py with GroundingValidator class
+- [X] T071 [US6] Implement out-of-scope detection with relevance threshold check
+- [X] T072 [US6] Add fallback response template for unanswerable questions
+- [X] T073 [US6] Implement suggestion system to recommend related topics
+- [X] T074 [US6] Add confidence scoring to generation_service.py responses
 
 ---
 
@@ -130,11 +130,11 @@
 
 ### Tasks
 
-- [ ] T080 [US3] Update ChatRequest model in src/models/chat.py to include selected_text field
-- [ ] T081 [US3] Modify retrieval_service.py to prioritize selected text context when provided
-- [ ] T082 [US3] Update generation_service.py to incorporate selected text in prompt
-- [ ] T083 [US3] Create src/services/selected_context_service.py with ContextBuilder class
-- [ ] T084 [US3] Implement selected text validation (max 1000 characters)
+- [X] T080 [US3] Update ChatRequest model in src/models/chat.py to include selected_text field
+- [X] T081 [US3] Modify retrieval_service.py to prioritize selected text context when provided
+- [X] T082 [US3] Update generation_service.py to incorporate selected text in prompt
+- [X] T083 [US3] Create src/services/selected_context_service.py with ContextBuilder class
+- [X] T084 [US3] Implement selected text validation (max 1000 characters)
 
 ---
 
@@ -148,12 +148,12 @@
 
 ### Tasks
 
-- [ ] T090 [US4] Create src/services/conversation_service.py with ConversationManager class
-- [ ] T091 [US4] Implement session storage using local filesystem or Redis
-- [ ] T092 [US4] Create src/api/conversation_router.py with GET /api/v1/chat/{conversation_id} endpoint
-- [ ] T093 [US4] Add GET /api/v1/chat/{conversation_id}/messages endpoint
-- [ ] T094 [US4] Implement conversation ID generation and tracking in chat endpoint
-- [ ] T095 [US4] Add conversation title generation from first query
+- [X] T090 [US4] Create src/services/conversation_service.py with ConversationManager class
+- [X] T091 [US4] Implement session storage using local filesystem or Redis
+- [X] T092 [US4] Create src/api/conversation_router.py with GET /api/v1/chat/{conversation_id} endpoint
+- [X] T093 [US4] Add GET /api/v1/chat/{conversation_id}/messages endpoint
+- [X] T094 [US4] Implement conversation ID generation and tracking in chat endpoint
+- [X] T095 [US4] Add conversation title generation from first query
 
 ---
 
@@ -167,13 +167,13 @@
 
 ### Tasks
 
-- [ ] T100 [US5] Create src/services/embeddings/cohere_embedding.py with CohereEmbeddingService
-- [ ] T101 [US5] Create src/services/embeddings/huggingface_embedding.py with HuggingFaceEmbeddingService
-- [ ] T102 [US5] Implement embedding provider configuration in embedding_factory.py
-- [ ] T103 [US5] Add provider selection via environment variable (EMBEDDING_PROVIDER)
-- [ ] T104 [US5] Create src/services/embeddings/__init__.py exporting all embedding services
-- [ ] T105 [US5] Implement batch embedding for indexing with progress tracking
-- [ ] T106 [US5] Add embedding caching to avoid redundant API calls
+- [X] T100 [US5] Create src/services/embeddings/cohere_embedding.py with CohereEmbeddingService
+- [X] T101 [US5] Create src/services/embeddings/huggingface_embedding.py with HuggingFaceEmbeddingService
+- [X] T102 [US5] Implement embedding provider configuration in embedding_factory.py
+- [X] T103 [US5] Add provider selection via environment variable (EMBEDDING_PROVIDER)
+- [X] T104 [US5] Create src/services/embeddings/__init__.py exporting all embedding services
+- [X] T105 [US5] Implement batch embedding for indexing with progress tracking
+- [X] T106 [US5] Add embedding caching to avoid redundant API calls
 
 ---
 
@@ -185,17 +185,17 @@
 
 ### Tasks
 
-- [ ] T110 Create pytest.ini and configure test discovery
-- [ ] T111 Write unit tests for chunking_service.py in tests/unit/test_chunking.py
-- [ ] T112 Write unit tests for retrieval_service.py in tests/unit/test_retrieval.py
-- [ ] T113 Write unit tests for models in tests/unit/test_models.py
-- [ ] T114 Write integration tests for chat endpoint in tests/integration/test_chat_api.py
-- [ ] T115 Create tests/contract/ directory with OpenAPI spec validation tests
-- [ ] T116 Add error handling middleware in src/api/middleware.py
-- [ ] T117 Implement request logging and correlation IDs
-- [ ] T118 Create Dockerfile for backend containerization
-- [ ] T119 Add Render.yaml or fly.toml for platform deployment
-- [ ] T120 Create .env.production with production configuration templates
+- [X] T110 Create pytest.ini and configure test discovery
+- [X] T111 Write unit tests for chunking_service.py in tests/unit/test_chunking.py
+- [X] T112 Write unit tests for retrieval_service.py in tests/unit/test_retrieval.py
+- [X] T113 Write unit tests for models in tests/unit/test_models.py
+- [X] T114 Write integration tests for chat endpoint in tests/integration/test_chat_api.py
+- [X] T115 Create tests/contract/ directory with OpenAPI spec validation tests
+- [X] T116 Add error handling middleware in src/api/middleware.py
+- [X] T117 Implement request logging and correlation IDs
+- [X] T118 Create Dockerfile for backend containerization
+- [X] T119 Add Render.yaml or fly.toml for platform deployment
+- [X] T120 Create .env.production with production configuration templates
 
 ---
 
